@@ -1,0 +1,94 @@
+<!DOCTYPE html> 
+
+<html>
+    
+<head> 
+    
+<title> Senators </title>
+    
+</head> 
+    
+<body>
+
+ <div id="id01">Test</div>   
+    
+<script>
+    
+//This variables is used to store the data parsed from the json file.       
+
+var senatorArray;
+    
+
+// This XMLHttpRequest is used to parse info from the first json file. 
+var xmlhttp = new XMLHttpRequest();
+var url = "senators.json";   
+
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        
+        //Parse the JSON data to a JavaScript variable. 
+        var parsedData = JSON.parse(xmlhttp.responseText);    
+        // This function is defined below and deals with the JSON data read from the file. 
+        senatorInfo(parsedData); 
+    }
+};
+
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+
+    
+// This function is used to read the data stored from the daily json file and display it in a table. 
+function senatorInfo(obj) {
+       
+    senatorArray = obj.list;
+    
+    
+    var contact_out = "<table>";
+    contact_out += "<tr><th>First Name</th><th>Last Name</th><th>Party</th><th>State</th><th>Gender</th><th>Rank</th></tr>";    
+    // Then iterate through the array and populate table rows and columns .
+    for (var i=0; i <senatorArray.length; i++) 
+        
+    {    
+        
+        
+        var firstName = senatorArray[i].firstname;
+        var lastName = senatorArray[i].lastname;
+        var party = senatorArray[i].party;
+        var gender = senatorArray[i].gender_label;
+        var rank = senatorArray[i].senator_rank_label;
+        
+        contact_out += "<tr><td>" +
+        firstName +
+        "</td><td>" +
+        lastName +
+        "</td><td>" +
+        party +
+        "</td><td>" +
+        gender +
+        "</td><td>" +
+        rank +
+        "</td><td>";
+        
+    }
+    
+    // Close the table element.
+    contact_out += "</table>";    
+    document.getElementById("id01").innerHTML = contact_out;
+    
+}      
+    
+
+
+    
+    
+</script>
+    
+    
+    
+
+    
+    
+</body>
+</html> 

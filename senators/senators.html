@@ -9,12 +9,23 @@
 </head> 
     
 <body>
+    <div>
+        <div>
+        <h1 id="countdem"></h1>
+        <ul id="demleaders">
+        </ul>
+        </div>
+        <div>
+        <h1 id="countrep">Count of Republican senators: </h1>
+        <ul id="repleaders">
+        </ul>
+        </div>
+    </div>
 
  <div id="id01">Test</div>   
     
 <script>
 
-// matt here. Testing that github is working correctly
     
 //This variables is used to store the data parsed from the json file.       
 
@@ -31,7 +42,8 @@ xmlhttp.onreadystatechange = function() {
         
         //Parse the JSON data to a JavaScript variable. 
         var parsedData = JSON.parse(xmlhttp.responseText);    
-        // This function is defined below and deals with the JSON data read from the file. 
+        // These functions are defined below and deal with the JSON data read from the file. 
+        DemRepCount(parsedData);
         senatorInfo(parsedData); 
     }
 };
@@ -40,7 +52,51 @@ xmlhttp.open("GET", url, true);
 xmlhttp.send();
 
 
-    
+//functions to count the total amount of democrats and republicans
+function DemRepCount(obj) {
+    let demcount, repcount, demli, repli;
+
+    senatorArray  = obj.objects;
+    demcount = 0;
+    repcount = 0;
+    demli = "";
+    repli = "";
+
+    //iterates through data and counts number of senators in each party
+    for (var i=0; i<senatorArray.length; i++) {
+        var party = senatorArray[i].party;
+        if (party == "Democrat") {
+            demcount ++;
+        }
+        else if (party == "Republican") {
+            repcount ++;
+        }
+
+        //checks for party leaders and formats name/role for list
+        var leadership_title = senatorArray[i].leadership_title;
+        var firstName = senatorArray[i].person.firstname;
+        var lastName = senatorArray[i].person.lastname;
+
+        if (leadership_title != null){
+            if (party == "Democrat") {
+                demli +=
+                `<li>${leadership_title}: ${firstName} ${lastName} (${party})</li>`;
+            }
+            if (party == "Republican") {
+                repli += 
+                `<li>${leadership_title}: ${firstName} ${lastName} (${party})</li>`;
+            }
+        }
+
+    }
+
+    //adds count of senators to heading, and role/name to lists
+    document.getElementById("demleaders").innerHTML = demli;
+    document.getElementById("repleaders").innerHTML = repli;
+    document.getElementById("countdem").innerHTML = `Count of Democrat Senators: ${demcount}`;
+    document.getElementById("countrep").innerHTML = `Count of Republican Senators: ${repcount}`;
+}
+
 // This function is used to read the data stored from the daily json file and display it in a table. 
 function senatorInfo(obj) {
        
@@ -55,10 +111,11 @@ function senatorInfo(obj) {
     {    
         
         
-        var firstName = senatorArray[i].firstname;
-        var lastName = senatorArray[i].lastname;
+        var firstName = senatorArray[i].person.firstname;
+        var lastName = senatorArray[i].person.lastname;
         var party = senatorArray[i].party;
-        var gender = senatorArray[i].gender_label;
+        var state = senatorArray[i].state;
+        var gender = senatorArray[i].person.gender_label;
         var rank = senatorArray[i].senator_rank_label;
         
         contact_out += "<tr><td>" +
@@ -67,6 +124,8 @@ function senatorInfo(obj) {
         lastName +
         "</td><td>" +
         party +
+        "</td><td>" +
+        state +
         "</td><td>" +
         gender +
         "</td><td>" +

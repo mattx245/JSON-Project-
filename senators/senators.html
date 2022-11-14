@@ -15,13 +15,15 @@
     <div>
         <div>
         <h1 id="countdem"></h1>
-        <ul id="demleaders">
-        </ul>
+        <ul id="demleaders"></ul>
         </div>
         <div>
-        <h1 id="countrep">Count of Republican senators: </h1>
-        <ul id="repleaders">
-        </ul>
+        <h1 id="countrep"></h1>
+        <ul id="repleaders"></ul>
+        </div>
+        <div>
+            <h1 id="countind"></h1>
+            <ul id="indleaders"></ul>
         </div>
     </div>
 
@@ -57,13 +59,15 @@ xmlhttp.send();
 
 //function to count the total amount of democrats and republicans and check for leadership roles
 function DemRepCount(obj) {
-    let demcount, repcount, demli, repli;
+    let demcount, repcount, indcount, demli, repli, indli;
 
     senatorArray  = obj.objects;
     demcount = 0;
     repcount = 0;
+    indcount = 0;
     demli = "";
     repli = "";
+    indli = "";
 
     //iterates through data and counts number of senators in each party
     for (var i=0; i<senatorArray.length; i++) {
@@ -73,6 +77,9 @@ function DemRepCount(obj) {
         }
         else if (party == "Republican") {
             repcount ++;
+        }
+        else if (party == "Independent") {
+            indcount ++;
         }
 
         //checks for party leaders and formats name/role for list
@@ -89,6 +96,10 @@ function DemRepCount(obj) {
                 repli += 
                 `<li>${leadership_title}: ${firstName} ${lastName} (${party})</li>`;
             }
+            if (party == "Independent") {
+                indli += 
+                `<li>${leadership_title}: ${firstName} ${lastName} (${party})</li>`;
+            }
         }
 
     }
@@ -96,9 +107,12 @@ function DemRepCount(obj) {
     //adds count of senators to heading, and role/name to lists
     document.getElementById("demleaders").innerHTML = demli;
     document.getElementById("repleaders").innerHTML = repli;
+    document.getElementById("indleaders").innerHTML = indli;
     document.getElementById("countdem").innerHTML = `Count of Democrat Senators: ${demcount}`;
     document.getElementById("countrep").innerHTML = `Count of Republican Senators: ${repcount}`;
+    document.getElementById("countind").innerHTML = `Count of Independent Senators: ${indcount}`;
 }
+
 
 // This function is used to read the data stored from the daily json file and display it in a table. 
 function senatorInfo(obj) {

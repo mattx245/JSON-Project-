@@ -1,16 +1,13 @@
-<!DOCTYPE html> 
-
-<html>
-    
-<head> 
-    
-<title> Senators </title>
-    
-</head> 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>senatorInfo</title>
+    <link rel="stylesheet" href="style.css">
+  </head> 
     
 <body>
-    
-    
     
     <div>
         <div>
@@ -27,7 +24,7 @@
         </div>
     </div>
 
- <div id="id01">Test</div>   
+ <div id="id01"></div>   
     
 <script>
 
@@ -55,6 +52,12 @@ xmlhttp.onreadystatechange = function() {
 
 xmlhttp.open("GET", url, true);
 xmlhttp.send();
+
+
+//onclick function for buttons in senator table
+function ClickFunction() {
+  alert(`Twitter: ${twitid} \nYoutube: ${ytid}`);
+}
 
 
 //function to count the total amount of democrats and republicans and check for leadership roles
@@ -119,14 +122,13 @@ function senatorInfo(obj) {
        
     senatorArray = obj.objects;
     
-    
     var contact_out = "<table>";
     contact_out += "<caption>List of Senators</caption><tr><th>First Name</th><th>Last Name</th><th>Party</th><th>State</th><th>Gender</th><th>Rank</th><th>More</th></tr>";    
     // Then iterate through the array and populate table rows and columns .
     for (var i=0; i <senatorArray.length; i++) 
-        
     {    
-        
+        twitid = senatorArray[i].person.twitterid;
+        ytid = senatorArray[i].person.youtubeid;
         
         var firstName = senatorArray[i].person.firstname;
         var lastName = senatorArray[i].person.lastname;
@@ -148,7 +150,7 @@ function senatorInfo(obj) {
         "</td><td>" +
         rank +
         "</td><td>" +
-        "<button type='button' class='moreinfo'>Click for more information</button></tr>";
+        "<button type='button' class='moreinfo' onclick='ClickFunction()'>Click for more information</button></tr>";
         
     }
     

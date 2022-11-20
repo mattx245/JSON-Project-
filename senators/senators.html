@@ -121,7 +121,7 @@ function senatorInfo(obj) {
     
     
     var contact_out = "<table>";
-    contact_out += "<caption>List of Senators</caption><tr><th>First Name</th><th>Last Name</th><th>Party</th><th>State</th><th>Gender</th><th>Rank</th></tr>";    
+    contact_out += "<caption>List of Senators</caption><tr><th>First Name</th><th>Last Name</th><th>Party</th><th>State</th><th>Gender</th><th>Rank</th><th>More</th></tr>";    
     // Then iterate through the array and populate table rows and columns .
     for (var i=0; i <senatorArray.length; i++) 
         
@@ -147,7 +147,8 @@ function senatorInfo(obj) {
         gender +
         "</td><td>" +
         rank +
-        "</td><td>";
+        "</td><td>" +
+        "<button type='button' class='moreinfo'>Click for more information</button></tr>";
         
     }
     

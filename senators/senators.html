@@ -24,6 +24,10 @@
         </div>
     </div>
 
+<div class="moreinfo">
+    <p id="demo"></p>
+</div>
+
  <div id="id01"></div>   
     
 <script>
@@ -53,10 +57,9 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.open("GET", url, true);
 xmlhttp.send();
 
-
 //onclick function for buttons in senator table
-function ClickFunction(tw, yt) {
-  alert(`Twitter: ${tw} \nYoutube: ${yt}`);
+function ClickFunction(id) {
+    document.getElementById("demo").innerHTML = id;
 }
 
 
@@ -127,8 +130,7 @@ function senatorInfo(obj) {
     // Then iterate through the array and populate table rows and columns .
     for (var i=0; i <senatorArray.length; i++) 
     {    
-        twitid = senatorArray[i].person.twitterid;
-        ytid = senatorArray[i].person.youtubeid;
+        var pvsidnum = senatorArray[i].person.pvsid;
         
         var firstName = senatorArray[i].person.firstname;
         var lastName = senatorArray[i].person.lastname;
@@ -150,7 +152,9 @@ function senatorInfo(obj) {
         "</td><td>" +
         rank +
         "</td><td>" +
-        `<button type='button' class='moreinfo' onclick='ClickFunction()'>Click for more information</button></tr>`;
+        "<button type='button' class='moreinfo' onclick='ClickFunction(" +
+        pvsidnum +
+        ")'>Click for more information</button></tr>";
         
     }
     

@@ -55,8 +55,8 @@ xmlhttp.send();
 
 
 //onclick function for buttons in senator table
-function ClickFunction() {
-  alert(`Twitter: ${twitid} \nYoutube: ${ytid}`);
+function ClickFunction(tw, yt) {
+  alert(`Twitter: ${tw} \nYoutube: ${yt}`);
 }
 
 
@@ -150,7 +150,7 @@ function senatorInfo(obj) {
         "</td><td>" +
         rank +
         "</td><td>" +
-        "<button type='button' class='moreinfo' onclick='ClickFunction()'>Click for more information</button></tr>";
+        `<button type='button' class='moreinfo' onclick='ClickFunction()'>Click for more information</button></tr>`;
         
     }
     

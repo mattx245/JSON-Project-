@@ -1,4 +1,12 @@
 #countdem, #countrep, #countind{
     text-align: center;
-    
+}
+
+table, td, th { 
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+    text-align: center;
 }

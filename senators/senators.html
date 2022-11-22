@@ -27,9 +27,14 @@
 
     <!--Buttons for filtering-->
     <div>
-    <input type='checkbox' id="checkdem" onclick="filter_party_dem()"> Filter by Democrats</input>
-    <input type='checkbox' id="checkrep" onclick="filter_party_rep()"> Filter by Republicans</input>
-    <input type='checkbox' id="checkind" onclick="filter_party_ind()"> Filter by Independents</input>
+        <input type='checkbox' id="checkdem" onclick="filter_party_dem()"> Filter by Democrats</input>
+        <input type='checkbox' id="checkrep" onclick="filter_party_rep()"> Filter by Republicans</input>
+        <input type='checkbox' id="checkind" onclick="filter_party_ind()"> Filter by Independents</input>
+    </div>
+
+    <div>
+        <input type='checkbox' id="checksenior" onclick="filter_rank_senior()"> Filter by Senior rank</input>
+        <input type='checkbox' id="checkjunior" onclick="filter_rank_junior()"> Filter by Junior rank</input>
     </div>
 
     <!--A potential space for more info on each senator-->
@@ -256,6 +261,64 @@ function filter_party_rep() {
     else {
         for (i = 0; i < tr.length; i++){
             td = tr[i].getElementsByTagName("td")[2];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+//Filters by senior rank
+function filter_rank_senior() {
+    var filter = "Senior";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checksenior");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+//Filters by junior rank
+function filter_rank_junior() {
+    var filter = "Junior";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkjunior");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
             tr[i].style.display = "";
         }
     }

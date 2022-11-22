@@ -9,6 +9,7 @@
     
 <body>
     
+    <!--Count of each party, and list of leaders if applicable-->
     <div>
         <div>
         <h1 id="countdem"></h1>
@@ -24,11 +25,20 @@
         </div>
     </div>
 
-<div class="moreinfo">
-    <p id="demo"></p>
-</div>
+    <!--Buttons for filtering-->
+    <div>
+    <input type='checkbox' id="checkdem" onclick="filter_party_dem()"> Filter by Democrats</input>
+    <input type='checkbox' id="checkrep" onclick="filter_party_rep()"> Filter by Republicans</input>
+    <input type='checkbox' id="checkind" onclick="filter_party_ind()"> Filter by Independents</input>
+    </div>
 
- <div id="id01"></div>   
+    <!--A potential space for more info on each senator-->
+    <div class="moreinfo">
+        <p id="demo"></p>
+    </div>
+
+    <!--Main table with senator information-->
+    <div id="id01"></div>   
     
 <script>
 
@@ -125,7 +135,7 @@ function senatorInfo(obj) {
        
     senatorArray = obj.objects;
     
-    var contact_out = "<table>";
+    var contact_out = "<table id='maintable'>";
     contact_out += "<caption>List of Senators</caption><tr><th>First Name</th><th>Last Name</th><th>Party</th><th>State</th><th>Gender</th><th>Rank</th><th>More</th></tr>";    
     // Then iterate through the array and populate table rows and columns .
     for (var i=0; i <senatorArray.length; i++) 
@@ -161,8 +171,95 @@ function senatorInfo(obj) {
     // Close the table element.
     contact_out += "</table>";    
     document.getElementById("id01").innerHTML = contact_out;
-    
-}      
+}     
+
+//Filters by democrat party
+function filter_party_dem() {
+    var filter = "Democrat";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkdem");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+
+//Filters by ind party
+function filter_party_ind() {
+    var filter = "Independent";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkind");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+//Filters by republican party
+function filter_party_rep() {
+    var filter = "Republican";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkrep");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            tr[i].style.display = "";
+        }
+    }
+}
     
 
 

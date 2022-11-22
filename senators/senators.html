@@ -37,14 +37,32 @@
         <input type='checkbox' id="checkjunior" onclick="filter_rank_junior()"> Filter by Junior rank</input>
     </div>
 
-    <!--A potential space for more info on each senator-->
-    <div class="moreinfo">
-        <p id="demo"></p>
+<!-- search bar for filtering states -->
+    <div>
+        <input type="text" id="myInput" onkeyup="filterState()" placeholder="Search for states.." title="Type in a state"> </input> 
     </div>
+
+
+    <!--More info table-->
+    <div id="demo"> </div>
 
     <!--Main table with senator information-->
     <div id="id01"></div>   
     
+
+
+<!-- A potential space for more info on each senator
+    <div class="moreinfo">
+        <p id="demo"></p>
+    </div>
+
+
+//onclick function for buttons in senator table
+function ClickFunction(id) {
+    document.getElementById("demo").innerHTML = id;
+}
+-->
+
 <script>
 
 
@@ -72,10 +90,10 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.open("GET", url, true);
 xmlhttp.send();
 
-//onclick function for buttons in senator table
-function ClickFunction(id) {
-    document.getElementById("demo").innerHTML = id;
-}
+
+    
+    
+    
 
 
 //function to count the total amount of democrats and republicans and check for leadership roles
@@ -167,7 +185,7 @@ function senatorInfo(obj) {
         "</td><td>" +
         rank +
         "</td><td>" +
-        "<button type='button' class='moreinfo' onclick='ClickFunction(" +
+        "<button type='button' class='moreinfo' onclick='ClickFunction()" +
         pvsidnum +
         ")'>Click for more information</button></tr>";
         
@@ -178,6 +196,48 @@ function senatorInfo(obj) {
     document.getElementById("id01").innerHTML = contact_out;
 }     
 
+    
+    
+//onclick function for buttons in senator table
+function ClickFunction(obj) {
+    
+    senatorArray = obj.objects;
+    
+    var contact_out = "<table id='more_info_table'>";
+    contact_out += "<caption>More Info</caption><tr><th>Office</th><th>Date of Birth</th><th>Start Date</th><th>Twitter</th><th>Youtube</th><th>Website</th></tr>";    
+    
+    for (var i=0; i <senatorArray.length; i++) 
+    {    
+        
+        var office = senatorArray[i].extra.office;
+        var dob = senatorArray[i].person.birthday;
+        var start_date = senatorArray[i].startdate;
+        var twitter = senatorArray[i].person.twitterid;
+        var youtube = senatorArray[i].person.youtubeid;
+        var website = senatorArray[i].website;
+    
+        
+        contact_out += "<tr><td>" +
+        office +
+        "</td><td>" +
+        dob +
+        "</td><td>" +
+        start_date +
+        "</td><td>" +
+        twitter +
+        "</td><td>" +
+        youtube +
+        "</td><td>" +
+        website +
+        "</td><td></tr>";
+       
+        
+    }
+    
+    // Close the table element.
+    contact_out += "</table>";    
+    document.getElementById("demo").innerHTML = contact_out;
+}     
 //Filters by democrat party
 function filter_party_dem() {
     var filter = "Democrat";
@@ -325,6 +385,34 @@ function filter_rank_junior() {
 }
     
 
+// filter by State
+    
+function filterState() {
+    //declaring variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("maintable");
+    tr = table.getElementsByTagName("tr");
+ 
+    //loop through all table rows and hide those that don't match the search query 
+    
+for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+    
+    
+    
+    
 
     
     

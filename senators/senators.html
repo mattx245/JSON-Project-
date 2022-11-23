@@ -83,6 +83,7 @@ xmlhttp.onreadystatechange = function() {
         var parsedData = JSON.parse(xmlhttp.responseText);    
         // These functions are defined below and deal with the JSON data read from the file. 
         DemRepCount(parsedData);
+        moreinfotable(parsedData);
         senatorInfo(parsedData); 
     }
 };
@@ -185,7 +186,7 @@ function senatorInfo(obj) {
         "</td><td>" +
         rank +
         "</td><td>" +
-        "<button type='button' class='moreinfo' onclick='ClickFunction()" +
+        "<button type='button' class='moreinfo' onclick='ClickFunction(" +
         pvsidnum +
         ")'>Click for more information</button></tr>";
         
@@ -198,13 +199,13 @@ function senatorInfo(obj) {
 
     
     
-//onclick function for buttons in senator table
-function ClickFunction(obj) {
+//generates table with more inro on senators
+function moreinfotable(obj) {
     
     senatorArray = obj.objects;
     
     var contact_out = "<table id='more_info_table'>";
-    contact_out += "<caption>More Info</caption><tr><th>Office</th><th>Date of Birth</th><th>Start Date</th><th>Twitter</th><th>Youtube</th><th>Website</th></tr>";    
+    contact_out += "<tr id='info_header'><th>Office</th><th>Date of Birth</th><th>Start Date</th><th>Twitter</th><th>Youtube</th><th>Website</th></tr>";    
     
     for (var i=0; i <senatorArray.length; i++) 
     {    
@@ -215,21 +216,23 @@ function ClickFunction(obj) {
         var twitter = senatorArray[i].person.twitterid;
         var youtube = senatorArray[i].person.youtubeid;
         var website = senatorArray[i].website;
-    
+        var pvsidnum = senatorArray[i].person.pvsid;
         
-        contact_out += "<tr><td>" +
+        contact_out += "<tr><td id='more_info'>" +
         office +
-        "</td><td>" +
+        "</td><td id='more_info'>" +
         dob +
-        "</td><td>" +
+        "</td><td id='more_info'>" +
         start_date +
-        "</td><td>" +
+        "</td><td id='more_info'>" +
         twitter +
-        "</td><td>" +
+        "</td><td id='more_info'>" +
         youtube +
-        "</td><td>" +
+        "</td><td id='more_info'>" +
         website +
-        "</td><td></tr>";
+        "</td><td id='pvsid'>" +
+        pvsidnum +
+        "</td></tr>"
        
         
     }
@@ -237,7 +240,32 @@ function ClickFunction(obj) {
     // Close the table element.
     contact_out += "</table>";    
     document.getElementById("demo").innerHTML = contact_out;
-}     
+}  
+
+//onclick function for more info
+function ClickFunction(id) {
+
+    var filter = id;
+    var table = document.getElementById("more_info_table");
+    var tr = table.getElementsByTagName("tr");
+    table.style.display = "table"
+    
+
+    for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[6];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+}
+
+
 //Filters by democrat party
 function filter_party_dem() {
     var filter = "Democrat";

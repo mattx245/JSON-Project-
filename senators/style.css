@@ -19,3 +19,15 @@ table, td, th {
 #demo {
     text-align: center;
 }
+
+#more_info_table {
+    display: none;
+}
+
+#pvsid {
+    display: none;
+}
+
+#info_header {
+    display: none;
+}

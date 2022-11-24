@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>senatorInfo</title>
+    <link rel="stylesheet" href="style.css">
+  </head> 
+    
+<body>
+    
+    <!--Count of each party, and list of leaders if applicable-->
+    
+    
+    
+    
+<div class = "container"> 
+    <img class="hero_image" src ="shaman.jpeg" alt = "America">
+    <div class = "bottom_left">Where We Go One We Go All</div>
+</div>
+    
+<br>
+<br>
+    
+<div id = "xxx">   
+</div>  
+
+ <hr class = "blue">
+    <div>
+        <div id = "center_div">
+        <h1 id="countdem"></h1>
+        <br>
+        <center><h3>Leaders of the Democrat Party</h3></center>
+        <center><ul id="demleaders"></ul></center>
+        </div>
+        
+        <hr class = "red"> 
+        
+        
+        <div id = "center_div">
+        <h1 id="countrep"></h1>
+        <center><h3>Leaders of the Republican Party</h3></center>
+        <center><ul id="repleaders"></ul></center>
+        </div>
+        
+        <hr class = "blue"> 
+        <div>
+            <h1 id="countind"></h1>
+            <ul id="indleaders"></ul>
+        </div>
+    </div>
+
+    <!--Buttons for filtering-->
+
+    <div class = "checkboxes">
+        <label><input type='checkbox' id="checkdem" onclick="filter_party_dem()"> Filter by Democrats</label>
+        <label><input type='checkbox' id="checkrep" onclick="filter_party_rep()"> Filter by Republicans</label>
+        <label><input type='checkbox' id="checkind" onclick="filter_party_ind()"> Filter by Independents</label>
+        <label><input type='checkbox' id="checksenior" onclick="filter_rank_senior()"> Filter by Senior rank</label>
+        <label><input type='checkbox' id="checkjunior" onclick="filter_rank_junior()"> Filter by Junior rank</label>
+     </div>
+
+<br>
+<br>
+<!-- search bar for filtering states -->
+    <center>  <label id = "test"><h2>Filter by State: </h2><input type="text" id="myInput" onkeyup="filterState()" placeholder="Search for states.." title="Type in a state"> </label> </center> 
+
+<br>
+<br>
+    <!--More info table-->
+    <div id="demo"> </div>
+    
+<br>
+<br>
+
+    <!--Main table with senator information-->
+    <div id="id01"></div>   
+    
+
+
+<!-- A potential space for more info on each senator
+    <div class="moreinfo">
+        <p id="demo"></p>
+    </div>
+
+
+//onclick function for buttons in senator table
+function ClickFunction(id) {
+    document.getElementById("demo").innerHTML = id;
+}
+-->
+
+<script>
+
+
+//This variables is used to store the data parsed from the json file.       
+
+var senatorArray;
+    
+
+// This XMLHttpRequest is used to parse info from the first json file. 
+var xmlhttp = new XMLHttpRequest();
+var url = "senators.json";   
+
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        
+        //Parse the JSON data to a JavaScript variable. 
+        var parsedData = JSON.parse(xmlhttp.responseText);    
+        // These functions are defined below and deal with the JSON data read from the file. 
+        DemRepCount(parsedData);
+        moreinfotable(parsedData);
+        senatorInfo(parsedData); 
+    }
+};
+
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+
+    
+
+//function to count the total amount of democrats and republicans and check for leadership roles
+function DemRepCount(obj) {
+    let demcount, repcount, indcount, demli, repli, indli;
+
+    senatorArray  = obj.objects;
+    demcount = 0;
+    repcount = 0;
+    indcount = 0;
+    demli = "";
+    repli = "";
+    indli = "";
+
+    //iterates through data and counts number of senators in each party
+    for (var i=0; i<senatorArray.length; i++) {
+        var party = senatorArray[i].party;
+        if (party == "Democrat") {
+            demcount ++;
+        }
+        else if (party == "Republican") {
+            repcount ++;
+        }
+        else if (party == "Independent") {
+            indcount ++;
+        }
+     
+        /// puts counts in table 
+        var partyTable = "<table id='partyTable' class = 'help'>";
+        partyTable += "<caption id = 'party_text'>Senator Count</caption><th id = 'color1'>Democrat</th><th id = 'color2'>Republican</th><th id = 'color3'>Independent</th>"; 
+        partyTable += "<tr><td id = 'space'>" +
+            
+        demcount +
+        "</td><td id = 'space'>" +
+        repcount +
+        "</td><td id = 'space'>" +
+        indcount + 
+        "</tr>";
+    
+    // Close the table element.
+        partyTable += "</table>";    
+        document.getElementById("xxx").innerHTML = partyTable;
+    
+        
+        //checks for party leaders and formats name/role for list
+        var leadership_title = senatorArray[i].leadership_title;
+        var firstName = senatorArray[i].person.firstname;
+        var lastName = senatorArray[i].person.lastname;
+
+        if (leadership_title != null){
+            if (party == "Democrat") {
+                demli +=
+                `<li>${leadership_title}: ${firstName} ${lastName} (${party})</li>`;
+            }
+            if (party == "Republican") {
+                repli += 
+                `<li>${leadership_title}: ${firstName} ${lastName} (${party})</li>`;
+            }
+            if (party == "Independent") {
+                indli += 
+                `<li>${leadership_title}: ${firstName} ${lastName} (${party})</li>`;
+            }
+        }
+
+    }
+
+    //adds count of senators to heading, and role/name to lists
+    document.getElementById("demleaders").innerHTML = demli;
+    document.getElementById("repleaders").innerHTML = repli;
+    document.getElementById("indleaders").innerHTML = indli;
+    //document.getElementById("countdem").innerHTML = `Count of Democrat Senators: ${demcount}`;
+    //document.getElementById("countrep").innerHTML = `Count of Republican Senators: ${repcount}`;
+    //document.getElementById("countind").innerHTML = `Count of Independent Senators: ${indcount}`;
+}
+
+
+// This function is used to read the data stored from the daily json file and display it in a table. 
+function senatorInfo(obj) {
+       
+    senatorArray = obj.objects;
+    
+    var contact_out = "<table id='maintable'>";
+    contact_out += "<caption>List of Senators</caption><tr><th>First Name</th><th>Last Name</th><th>Party</th><th>State</th><th>Gender</th><th>Rank</th><th>More</th></tr>";    
+    // Then iterate through the array and populate table rows and columns .
+    for (var i=0; i <senatorArray.length; i++) 
+    {    
+        var pvsidnum = senatorArray[i].person.pvsid;
+        
+        var firstName = senatorArray[i].person.firstname;
+        var lastName = senatorArray[i].person.lastname;
+        var party = senatorArray[i].party;
+        var state = senatorArray[i].state;
+        var gender = senatorArray[i].person.gender_label;
+        var rank = senatorArray[i].senator_rank_label;
+        
+        contact_out += "<tr><td>" +
+        firstName +
+        "</td><td>" +
+        lastName +
+        "</td><td>" +
+        party +
+        "</td><td>" +
+        state +
+        "</td><td>" +
+        gender +
+        "</td><td>" +
+        rank +
+        "</td><td>" +
+        "<button type='button' class='moreinfo' onclick='ClickFunction(" +
+        pvsidnum +
+        ")'>Click for more information</button></tr>";
+        
+    }
+    
+    // Close the table element.
+    contact_out += "</table>";    
+    document.getElementById("id01").innerHTML = contact_out;
+    
+    ///////////////////////////////////////////////////////////// This automatically sorts parties alphabetically 
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById('maintable');
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[2];
+      y = rows[i + 1].getElementsByTagName("TD")[2];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}     
+
+
+    
+    
+//generates table with more inro on senators
+function moreinfotable(obj) {
+    
+    senatorArray = obj.objects;
+    
+    var contact_out = "<table id='more_info_table'>";
+    contact_out += "<tr id='info_header'><th>Office</th><th>Date of Birth</th><th>Start Date</th><th>Twitter</th><th>Youtube</th><th>Website</th></tr>";    
+    
+    for (var i=0; i <senatorArray.length; i++) 
+    {    
+        
+        var office = senatorArray[i].extra.office;
+        var dob = senatorArray[i].person.birthday;
+        var start_date = senatorArray[i].startdate;
+        var twitter = senatorArray[i].person.twitterid;
+        var youtube = senatorArray[i].person.youtubeid;
+        var website = senatorArray[i].website;
+        var pvsidnum = senatorArray[i].person.pvsid;
+        
+        contact_out += "<tr><td id='more_info'>" +
+        office +
+        "</td><td id='more_info'>" +
+        dob +
+        "</td><td id='more_info'>" +
+        start_date +
+        "</td><td id='more_info'>" +
+        twitter +
+        "</td><td id='more_info'>" +
+        youtube +
+        "</td><td id='more_info'>" +
+        "<a href="+website+" target =_blank>" + website + "</a></td>" +
+        "</td><td id='pvsid'>" +
+        pvsidnum +
+        "</td></tr>"
+       
+        
+    }
+    
+    // Close the table element.
+    contact_out += "</table>";    
+    document.getElementById("demo").innerHTML = contact_out;
+}  
+
+//onclick function for more info
+function ClickFunction(id) {
+
+    var filter = id;
+    var table = document.getElementById("more_info_table");
+    var tr = table.getElementsByTagName("tr");
+    table.style.display = "table"
+    
+
+    for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[6];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    
+    
+    // causes page to scroll to more details of senator once button is clicked
+    var element_to_scroll_to = document.getElementById('more_info_table');
+    element_to_scroll_to.scrollIntoView();
+}
+
+
+//Filters by democrat party
+function filter_party_dem() {
+    var filter = "Democrat";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkdem");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+
+//Filters by ind party
+function filter_party_ind() {
+    var filter = "Independent";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkind");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+//Filters by republican party
+function filter_party_rep() {
+    var filter = "Republican";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkrep");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[2];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+//Filters by senior rank
+function filter_rank_senior() {
+    var filter = "Senior";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checksenior");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
+            tr[i].style.display = "";
+        }
+    }
+}
+
+//Filters by junior rank
+function filter_rank_junior() {
+    var filter = "Junior";
+    var table = document.getElementById('maintable');
+    var tr = table.getElementsByTagName("tr");
+    var checkBox = document.getElementById("checkjunior");
+
+    if (checkBox.checked == true){
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
+            if (td) {
+                text = td.TextContent || td.innerText;
+                if (text == filter) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[5];
+            tr[i].style.display = "";
+        }
+    }
+}
+    
+
+// filter by State
+    
+function filterState() {
+    //declaring variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("maintable");
+    tr = table.getElementsByTagName("tr");
+ 
+    //loop through all table rows and hide those that don't match the search query 
+    
+for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+    
+    
+    
+    
+
+    
+    
+</script>
+    
+    
+    
+
+    
+    
+</body>
+</html> 

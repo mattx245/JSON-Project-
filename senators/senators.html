@@ -1,22 +1,19 @@
+<!--W3Schools used as reference for most aspects of project-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>senatorInfo</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
   </head> 
     
-<body>
+<body>  
     
-    <!--Count of each party, and list of leaders if applicable-->
-    
-    
-    
-    
+ <!--Hero image and aesthetics-->   
 <div class = "container"> 
-    <img class="hero_image" src ="shaman.jpeg" alt = "America">
-    <div class = "bottom_left">Where We Go One We Go All</div>
+    <img class="hero_image" id="heroimg" src ="../images/shaman.jpeg" alt = "America">
+    <div class = "bottom_left" id="cap">Where We Go One We Go All</div>
 </div>
     
 <br>
@@ -25,12 +22,13 @@
 <div id = "xxx">   
 </div>  
 
+<!--Count of each party, and list of leaders if applicable-->
  <hr class = "blue">
     <div>
         <div id = "center_div">
         <h1 id="countdem"></h1>
         <br>
-        <center><h3>Leaders of the Democrat Party</h3></center>
+        <center><h3 onclick="tree()">Leaders of the Democrat Party</h3></center>
         <center><ul id="demleaders"></ul></center>
         </div>
         
@@ -521,7 +519,10 @@ for (i = 0; i < tr.length; i++) {
     
     
     
-    
+function tree () {
+    document.getElementById("heroimg").src = "../images/tree.png"
+    document.getElementById("cap").innerHTML = "Where Tree Go One Tree Go All"
+}  
 
     
     

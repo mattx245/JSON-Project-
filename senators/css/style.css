@@ -29,7 +29,8 @@ table, td, th {
 }
 
 #info_header {
-    display: none;
+    background-color: green;
+    color: #ffffff;
 }
 
 

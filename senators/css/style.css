@@ -84,9 +84,7 @@ position: relative;
     
 }
 
-#countdem {
-    position: right;
-}
+
 
 .checkboxes {
     box-sizing: border-box;
@@ -148,7 +146,6 @@ position: relative;
     font-family: sans-serif;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    position: center;
     width: 75%;
 }
 
@@ -195,19 +192,26 @@ position: relative;
     font-family: sans-serif;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    position: center;
     width: 75%;
     
 }
 
-#test {
-    float: center;
-}
-
-#myInput 
 
 #myInput {
     width: 240px;
     margin-right: 20px;
     height: 25px;
+}
+
+
+#testing, #yyy {
+    
+    text-align: center;
+    
+}
+
+
+label {
+    font-size: 15px;
+    font-weight: bold;
 }
